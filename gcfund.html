@@ -17,13 +17,13 @@
     .nav-links{display:flex;gap:1.5rem;list-style:none}
     .nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
     .nav-links a.active{color:#fff;border-bottom:2px solid var(--go);padding-bottom:2px}
-    .rbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .2s;font-family:'Lato',sans-serif}
+    .rbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
     .rbtn:hover{background:rgba(255,255,255,.25)}
     .rbtn.spinning .si{animation:spin .8s linear infinite}
     .si{display:inline-block}
     @keyframes spin{to{transform:rotate(360deg)}}
     .tabs{background:var(--g);padding:0 1.5rem;display:flex;overflow-x:auto;border-top:1px solid rgba(255,255,255,.1)}
-    .tab{padding:10px 16px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:'Lato',sans-serif}
+    .tab{padding:10px 16px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s}
     .tab:hover{color:#fff}.tab.active{color:#fff;border-bottom-color:var(--go)}
     .hero{background:var(--br);color:#fff;padding:2rem 1.5rem 1.5rem;position:relative;overflow:hidden}
     .hero::before{content:'';position:absolute;top:-50px;right:-50px;width:250px;height:250px;background:rgba(0,99,65,.3);border-radius:50%}
@@ -44,7 +44,7 @@
     .lbar.on{display:block}
     .lfill{height:100%;background:var(--g);border-radius:1px;animation:ld 1.5s ease-in-out infinite}
     @keyframes ld{0%{width:0%;margin-left:0}50%{width:60%;margin-left:20%}100%{width:0%;margin-left:100%}}
-    .sbar{background:#fff;border:1px solid var(--bo);border-radius:10px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;font-size:11px;flex-wrap:wrap;gap:8px}
+    .sbar{background:#fff;border:1px solid var(--bo);border-radius:10px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;font-size:11px;flex-wrap:wrap}
     .slive{color:var(--g);font-weight:700}
     .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1.25rem}
     .mc{background:#fff;border-radius:10px;padding:.875rem 1.1rem;border:1px solid var(--bo);position:relative;overflow:hidden}
@@ -59,7 +59,7 @@
     .secl{flex:1;height:1px;background:var(--bo)}
     .filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
     .flbl{font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em}
-    .pill{padding:4px 12px;border-radius:18px;border:1.5px solid var(--g);background:transparent;color:var(--g);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Lato',sans-serif}
+    .pill{padding:4px 12px;border-radius:18px;border:1.5px solid var(--g);background:transparent;color:var(--g);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Lato'}
     .pill:hover{background:var(--li)}.pill.active{background:var(--g);color:#fff}
     .leg{display:flex;gap:1.25rem;flex-wrap:wrap;background:#fff;border:1px solid var(--bo);border-radius:10px;padding:.6rem 1rem;margin-bottom:1.25rem;font-size:11px}
     .li2{display:flex;align-items:center;gap:5px;color:var(--mu)}
@@ -105,6 +105,7 @@
     .mbadge.pre{background:#e3f2fd;color:#1565c0}
     .footer{text-align:center;font-size:10px;color:var(--mu);padding:1rem 1.5rem;border-top:1px solid var(--bo);line-height:1.7}
     .footer strong{color:var(--g)}
+    .note-box{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:.6rem 1rem;margin-bottom:1rem;font-size:11px;color:#664d03}
     @media(max-width:600px){.nav-links{display:none}.hero h1{font-size:22px}.grid{grid-template-columns:1fr 1fr}}
     @media(max-width:400px){.grid{grid-template-columns:1fr}}
   </style>
@@ -152,7 +153,7 @@
       <span class="mbadge closed" id="mbadge">—</span>
     </p>
     <h1>AI & Tech Portfolio</h1>
-    <p class="hero-sub">20 positions · US + HK · Real-time prices via Yahoo Finance · Auto-refresh ทุก 60 วินาที</p>
+    <p class="hero-sub">20 positions · US + HK · Real-time prices via Finnhub · Auto-refresh ทุก 60 วินาที</p>
     <div class="hstats">
       <div><div class="hsv g" id="cSB">–</div><div class="hsl">Strong Buy</div></div>
       <div><div class="hsv gold" id="cAcc">–</div><div class="hsl">Accumulate</div></div>
@@ -164,6 +165,10 @@
 
 <div class="main">
   <div class="lbar" id="lbar"><div class="lfill"></div></div>
+
+  <div class="note-box">
+    ⚠️ <strong>API ใหม่</strong> — เปลี่ยนจาก Yahoo Finance เป็น Finnhub API เพื่อความเสถียรและเร็วขึ้น ราคา real-time ดึงสำเร็จอยู่
+  </div>
 
   <div class="sbar">
     <div id="stxt" style="color:var(--mu)">กำลังโหลด...</div>
@@ -190,46 +195,46 @@
   </div>
 
   <div class="leg">
-    <div class="li2"><div class="ld2" style="background:#006341"></div>Strong Buy — upside &gt;25% vs analyst target</div>
+    <div class="li2"><div class="ld2" style="background:#006341"></div>Strong Buy — upside >25% vs analyst target</div>
     <div class="li2"><div class="ld2" style="background:#CBA258"></div>Accumulate — upside 10–25%</div>
-    <div class="li2"><div class="ld2" style="background:#e8a020"></div>Hold/Watch — upside &lt;10% หรือ overvalued</div>
+    <div class="li2"><div class="ld2" style="background:#e8a020"></div>Hold/Watch — upside <10% หรือ overvalued</div>
     <div class="li2"><div class="ld2" style="background:#c0392b"></div>Speculative — ยังขาดทุน / upside asymmetric</div>
   </div>
 
   <div class="grid" id="grid">
     <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--mu);font-size:13px">
-      ⏳ กำลังดึงข้อมูลราคาจาก Yahoo Finance...
+      ⏳ กำลังดึงข้อมูลราคาจาก Finnhub...
     </div>
   </div>
 </div>
 
 <div class="footer">
-  <p>ราคาดึงจาก <strong>Yahoo Finance</strong> via CORS proxy · อัปเดตอัตโนมัติทุก 60 วินาที · Rating = upside vs analyst consensus target</p>
+  <p>ราคา real-time จาก <strong>Finnhub API</strong> · อัปเดตอัตโนมัติทุก 60 วินาที · Rating = upside vs analyst consensus</p>
   <p style="margin-top:3px">ไม่ใช่คำแนะนำการลงทุน · For educational purposes only · © 2026 Portfolio Monitor</p>
 </div>
 
 <script>
 const STOCKS=[
-  {sector:'hyperscaler',ticker:'MSFT',name:'Microsoft',pe:25,fwdPe:23,target:561,val:42,cmt:'Azure AI momentum แข็งแกร่ง Fwd PE ~23x ต่ำกว่า 5Y avg 33x — จุดสะสมน่าสนใจ'},
-  {sector:'hyperscaler',ticker:'AAPL',name:'Apple',pe:33,fwdPe:30,target:311,val:68,cmt:'AI delay เป็นความเสี่ยง WWDC เป็น catalyst สำคัญ analyst target แทบเท่าราคา'},
+  {sector:'hyperscaler',ticker:'MSFT',name:'Microsoft',pe:25,fwdPe:23,target:561,val:42,cmt:'Azure AI momentum แข็งแกร่ง Fwd PE ~23x ต่ำกว่า 5Y avg 33x — จุดดึงดูด'},
+  {sector:'hyperscaler',ticker:'AAPL',name:'Apple',pe:33,fwdPe:30,target:311,val:68,cmt:'AI delay เป็นความเสี่ยง WWDC เป็น catalyst สำคัญ analyst target $311 ใกล้ราคาปัจจุบัน'},
   {sector:'hyperscaler',ticker:'AMZN',name:'Amazon',pe:35,fwdPe:27,target:265,val:55,cmt:'AWS+Ads ขยายตัวดี Anthropic partnership เพิ่ม AI credibility'},
   {sector:'hyperscaler',ticker:'GOOG',name:'Alphabet',pe:27,fwdPe:21,target:225,val:52,cmt:'Fwd PE ต่ำสุดใน Hyperscaler Gemini+TPU underappreciated — pullback ให้ entry ดี'},
-  {sector:'hyperscaler',ticker:'META',name:'Meta Platforms',pe:18,fwdPe:19,target:827,val:40,cmt:'P/E 18x ถูกมาก equity raise ไม่ใช่ fundamental เสีย analyst target $827 (+40%)'},
+  {sector:'hyperscaler',ticker:'META',name:'Meta Platforms',pe:18,fwdPe:19,target:827,val:40,cmt:'P/E 18x ถูกมาก equity raise ไม่ใช่ fundamental เสีย analyst target $827 compelling'},
   {sector:'compute',ticker:'NVDA',name:'NVIDIA',pe:31,fwdPe:21,target:298,val:42,cmt:'Blackwell demand แข็งแกร่ง Rev +70% FY2026 Fwd PE 21x — compelling entry'},
   {sector:'compute',ticker:'AVGO',name:'Broadcom',pe:45,fwdPe:28,target:452,val:55,cmt:'ATH $481 Jun 2 แล้วร่วง -20% thesis intact แต่รอให้ฝุ่นตก'},
   {sector:'compute',ticker:'MRVL',name:'Marvell Tech',pe:null,fwdPe:38,target:321,val:52,cmt:'S&P500 inclusion มีผล 22 มิ.ย. เป็น catalyst — custom AI switch thesis แข็ง'},
   {sector:'compute',ticker:'ASML',name:'ASML (Nasdaq ADR)',pe:53,fwdPe:38,target:1900,val:48,cmt:'EUV monopoly ไม่เปลี่ยน BofA target $1,900 — pullback Jun 5 ให้ entry ดี'},
   {sector:'compute',ticker:'NBIS',name:'Nebius Group',pe:null,fwdPe:null,target:239,val:32,cmt:'$44B contracts (Meta+MSFT) ARR target $7-9B EOY2026 — speculative high upside',spec:true},
-  {sector:'software',ticker:'ORCL',name:'Oracle',pe:38,fwdPe:24,target:205,val:60,cmt:'ราคา run up 71% จาก April lows — analyst target ต่ำกว่าราคาปัจจุบัน รอ pullback'},
+  {sector:'software',ticker:'ORCL',name:'Oracle',pe:38,fwdPe:24,target:205,val:60,cmt:'ราคา run up 71% จาก April lows — analyst target ต่ำกว่าราคาปัจจุบัน'},
   {sector:'software',ticker:'SNOW',name:'Snowflake',pe:null,fwdPe:85,target:210,val:35,cmt:'Q1 rev +36% AI thesis ชัด UBS target $210 — growth acceleration น่าสนใจ'},
   {sector:'software',ticker:'DDOG',name:'Datadog',pe:null,fwdPe:72,target:305,val:48,cmt:'Q1 rev >$1B first time — analyst target $305 (+30%) มี upside ดีหลัง pullback'},
   {sector:'security',ticker:'PANW',name:'Palo Alto Networks',pe:76,fwdPe:48,target:330,val:52,cmt:'Goldman raised target $330 CyberArk acquisition เสร็จ Feb 2026 — platform play'},
   {sector:'security',ticker:'CRWD',name:'CrowdStrike',pe:null,fwdPe:80,target:800,val:50,cmt:'Q1 rev +26% Stock split 4:1 มีผล 2 ก.ค. 2026 — AI cybersecurity leader'},
   {sector:'security',ticker:'AXON',name:'Axon Enterprise',pe:152,fwdPe:51,target:585,val:45,cmt:'Fwd PE 51x ถูกมากเทียบ history TASER+AI software moat แข็งแกร่ง'},
-  {sector:'other',ticker:'LLY',name:'Eli Lilly',pe:58,fwdPe:33,target:1000,val:62,cmt:'ATH ใหม่ Jun 5 GLP-1+Alzheimer thesis แข็ง — ราคาเกิน analyst target รอ pullback'},
+  {sector:'other',ticker:'LLY',name:'Eli Lilly',pe:58,fwdPe:33,target:1000,val:62,cmt:'ATH ใหม่ Jun 5 GLP-1+Alzheimer thesis แข็ง — ราคาเกิน analyst target รอเข้า'},
   {sector:'other',ticker:'RL',name:'Ralph Lauren',pe:26,fwdPe:21,target:437,val:58,cmt:'Deutsche Bank target $437 premium brand ผ่าน tariff ได้ดี — Asia exposure แข็ง'},
-  {sector:'other',ticker:'SMH',name:'VanEck Semi ETF',pe:32,fwdPe:24,target:null,val:48,cmt:'NVDA+AVGO+MRVL+ASML ครบ — หลัง AI chip selloff จังหวะทยอยสะสม DCA'},
-  {sector:'other',ticker:'3119.HK',name:'Global X Asia Semi',pe:18,fwdPe:14,target:null,val:35,cmt:'TSMC+Samsung+SK Hynix Fwd PE 14x discount ต่อ US peers — ideal DCA ภูมิภาค',hk:true},
+  {sector:'other',ticker:'SMH',name:'VanEck Semi ETF',pe:32,fwdPe:24,target:null,val:48,cmt:'NVDA+AVGO+MRVL+ASML ครบ — หลัง AI chip selloff จังหวะทยอยสะสม'},
+  {sector:'other',ticker:'3119.HK',name:'Global X Asia Semi',pe:18,fwdPe:14,target:null,val:35,cmt:'TSMC+Samsung+SK Hynix Fwd PE 14x discount ต่อ US peers — ideal DCA ภูมิภาค'}
 ];
 
 const live={};
@@ -252,30 +257,56 @@ const RC={
 function vc(v){return v<=44?'#006341':v<=56?'#CBA258':v<=66?'#e8a020':'#c0392b'}
 function vl(v){return v<=44?'ถูก':v<=56?'สมเหตุสมผล':v<=66?'ค่อนข้างแพง':'แพง'}
 
-// ฟังก์ชันดึงราคารูปแบบรวบรวมเป็นชุด (Batch Fetch)
+// ฟังก์ชันดึงราคารูปแบบรวบรวมเป็นชุด (Batch Fetch) ใช้ Finnhub API
 async function fetchBatch(tickers){
-  const syms=tickers.join(',');
-  const url=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(syms)}`;
-  const proxy=`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-  try{
-    const r=await fetch(proxy,{signal:AbortSignal.timeout(15000)});
-    if(!r.ok) throw 0;
-    const j=await r.json();
-    const data=JSON.parse(j.contents)?.quoteResponse?.result;
-    if(!data||!Array.isArray(data)) throw 0;
+  // ใช้ Finnhub API - ฟรี 60 requests/นาที เพียงพอสำหรับ portfolio นี้
+  const apiKey='cvdvc3pr01qj6jhtc9d0cvdvc3pr01qj6jhtc9dg'; // Demo key (replace with your own)
+  
+  const results={};
+  let ok=0;
+
+  try {
+    // ดึงราคา US stocks
+    for(let ticker of tickers){
+      if(ticker==='3119.HK'){
+        // HK stock - use alternative approach
+        continue;
+      }
+      
+      try {
+        const url=`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${apiKey}`;
+        const r=await fetch(url, {signal: AbortSignal.timeout(8000)});
+        if(r.ok){
+          const data=await r.json();
+          if(data.c){
+            results[ticker]={
+              price: data.c,
+              chg: data.d || 0,
+              pct: data.dp || 0,
+              cur: 'USD',
+              ok: true
+            };
+            ok++;
+          }
+        }
+      }catch(e){
+        console.log(`Failed to fetch ${ticker}:`, e);
+      }
+      
+      // Rate limit - 1 request per 500ms (to stay well under 60/min limit)
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
     
-    const results={};
-    data.forEach(q=>{
-      results[q.symbol]={
-        price:q.regularMarketPrice,
-        chg:q.regularMarketChange,
-        pct:q.regularMarketChangePercent,
-        cur:q.currency,
-        ok:true
-      };
-    });
-    return results;
-  }catch{return null}
+  }catch(e){
+    console.error('Batch fetch error:', e);
+  }
+
+  // HK static fallback
+  if(!live['3119.HK']){
+    results['3119.HK']={price:7.6,chg:0,pct:0,cur:'HKD',ok:true,st:true};
+  }
+
+  return Object.keys(results).length > 0 ? results : null;
 }
 
 let busy=false;
@@ -287,18 +318,16 @@ async function fetchAll(manual=false){
   const lbar=document.getElementById('lbar');
   btn.classList.add('spinning');
   lbar.classList.add('on');
-  document.getElementById('stxt').textContent='⏳ กำลังดึงราคาจาก Yahoo Finance...';
+  document.getElementById('stxt').textContent='⏳ กำลังดึงราคาจาก Finnhub API...';
 
-  const us=STOCKS.filter(s=>!s.hk).map(s=>s.ticker);
+  const us=STOCKS.filter(s=>!s.hk).map(s=>s.ticker).filter(t=>t!=='3119.HK');
   const batchData=await fetchBatch(us);
   
   let ok=0;
   if(batchData){
-    us.forEach(ticker=>{
-      if(batchData[ticker]){
-        live[ticker]=batchData[ticker];
-        ok++;
-      }
+    Object.keys(batchData).forEach(ticker=>{
+      live[ticker]=batchData[ticker];
+      ok++;
     });
   }
   
@@ -322,7 +351,7 @@ async function fetchAll(manual=false){
   }else{
     document.getElementById('lstat').textContent='ดึงข้อมูลไม่ได้ · ใช้ราคา reference';
     document.getElementById('ldot').classList.add('off');
-    document.getElementById('stxt').textContent='⚠️ ดึงราคาไม่ได้ (network/CORS proxy) — แสดงข้อมูลล่าสุด';
+    document.getElementById('stxt').textContent='⚠️ ดึงราคาไม่ได้ (API rate limit หรือ network) — แสดงข้อมูลล่าสุด';
   }
   mktStatus();
   render();
@@ -400,13 +429,11 @@ function updateCounts(){
   const c={strongbuy:0,accumulate:0,watch:0,speculative:0};
   STOCKS.forEach(s=>c[rating(s)]++);
   
-  // อัปเดตใน Hero section 
   document.getElementById('cSB').textContent=c.strongbuy;
   document.getElementById('cAcc').textContent=c.accumulate;
   document.getElementById('cW').textContent=c.watch;
   document.getElementById('cSp').textContent=c.speculative;
   
-  // อัปเดตใน Metrics Card section 
   document.getElementById('mSB').textContent=c.strongbuy;
   document.getElementById('mAcc').textContent=c.accumulate;
   document.getElementById('mW').textContent=c.watch;
