@@ -86,7 +86,7 @@
     .badge{position:absolute;top:9px;right:9px;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:9px}
     .badge.buy{background:rgba(94,203,144,.3);color:#a8f0cc}
     .badge.hold{background:rgba(203,162,88,.3);color:var(--go)}
-    .badge.spec{background:rgba(255,138,128,.3);color:#ff8a80}
+    .badge.spec.badge.spec{background:rgba(255,138,128,.3);color:#ff8a80}
     .cb{padding:.8rem 1rem}
     .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
     .rl{font-size:10px;color:var(--mu);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
@@ -252,20 +252,30 @@ const RC={
 function vc(v){return v<=44?'#006341':v<=56?'#CBA258':v<=66?'#e8a020':'#c0392b'}
 function vl(v){return v<=44?'ถูก':v<=56?'สมเหตุสมผล':v<=66?'ค่อนข้างแพง':'แพง'}
 
-async function fetchOne(sym){
-  const url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=2d`;
+// ฟังก์ชันดึงราคารูปแบบรวบรวมเป็นชุด (Batch Fetch)
+async function fetchBatch(tickers){
+  const syms=tickers.join(',');
+  const url=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(syms)}`;
   const proxy=`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
   try{
-    const r=await fetch(proxy,{signal:AbortSignal.timeout(9000)});
+    const r=await fetch(proxy,{signal:AbortSignal.timeout(15000)});
     if(!r.ok) throw 0;
     const j=await r.json();
-    const m=JSON.parse(j.contents)?.chart?.result?.[0]?.meta;
-    if(!m) throw 0;
-    const price=m.regularMarketPrice??m.previousClose;
-    const prev=m.chartPreviousClose??m.previousClose;
-    const chg=price-prev, pct=prev?(chg/prev)*100:0;
-    return{price,chg,pct,cur:m.currency||'USD',ok:true};
-  }catch{return{ok:false}}
+    const data=JSON.parse(j.contents)?.quoteResponse?.result;
+    if(!data||!Array.isArray(data)) throw 0;
+    
+    const results={};
+    data.forEach(q=>{
+      results[q.symbol]={
+        price:q.regularMarketPrice,
+        chg:q.regularMarketChange,
+        pct:q.regularMarketChangePercent,
+        cur:q.currency,
+        ok:true
+      };
+    });
+    return results;
+  }catch{return null}
 }
 
 let busy=false;
@@ -279,13 +289,19 @@ async function fetchAll(manual=false){
   lbar.classList.add('on');
   document.getElementById('stxt').textContent='⏳ กำลังดึงราคาจาก Yahoo Finance...';
 
-  const us=STOCKS.filter(s=>!s.hk);
-  const res=await Promise.allSettled(us.map(s=>fetchOne(s.ticker)));
+  const us=STOCKS.filter(s=>!s.hk).map(s=>s.ticker);
+  const batchData=await fetchBatch(us);
+  
   let ok=0;
-  us.forEach((s,i)=>{
-    const r=res[i];
-    if(r.status==='fulfilled'&&r.value.ok){live[s.ticker]=r.value;ok++;}
-  });
+  if(batchData){
+    us.forEach(ticker=>{
+      if(batchData[ticker]){
+        live[ticker]=batchData[ticker];
+        ok++;
+      }
+    });
+  }
+  
   // HK static fallback
   if(!live['3119.HK']) live['3119.HK']={price:7.6,chg:0,pct:0,cur:'HKD',ok:true,st:true};
 
@@ -306,7 +322,7 @@ async function fetchAll(manual=false){
   }else{
     document.getElementById('lstat').textContent='ดึงข้อมูลไม่ได้ · ใช้ราคา reference';
     document.getElementById('ldot').classList.add('off');
-    document.getElementById('stxt').textContent='⚠️ ดึงราคาไม่ได้ (network/CORS) — แสดงราคา reference ล่าสุด';
+    document.getElementById('stxt').textContent='⚠️ ดึงราคาไม่ได้ (network/CORS proxy) — แสดงข้อมูลล่าสุด';
   }
   mktStatus();
   render();
@@ -315,15 +331,18 @@ async function fetchAll(manual=false){
 
 function mktStatus(){
   const el=document.getElementById('mbadge');
-  const now=new Date();
-  const utc=now.getTime()+now.getTimezoneOffset()*60000;
-  const et=new Date(utc+(-4)*3600000);
-  const h=et.getHours(),mn=et.getMinutes(),d=et.getDay();
-  const mins=h*60+mn;
-  if(d===0||d===6){el.textContent='Market Closed';el.className='mbadge closed';}
-  else if(mins>=570&&mins<960){el.textContent='🟢 Market Open';el.className='mbadge open';}
-  else if(mins>=540&&mins<570){el.textContent='🔵 Pre-Market';el.className='mbadge pre';}
-  else{el.textContent='🟡 After Hours';el.className='mbadge closed';}
+  try {
+    const etStr=new Date().toLocaleString("en-US",{timeZone:"America/New_York"});
+    const et=new Date(etStr);
+    const h=et.getHours(),mn=et.getMinutes(),d=et.getDay();
+    const mins=h*60+mn;
+    if(d===0||d===6){el.textContent='Market Closed';el.className='mbadge closed';}
+    else if(mins>=570&&mins<960){el.textContent='🟢 Market Open';el.className='mbadge open';}
+    else if(mins>=540&&mins<570){el.textContent='🔵 Pre-Market';el.className='mbadge pre';}
+    else{el.textContent='🟡 After Hours';el.className='mbadge closed';}
+  } catch(e) {
+    el.textContent='Market Closed';el.className='mbadge closed';
+  }
 }
 
 let aTab='all',aRat='all';
@@ -380,12 +399,17 @@ function render(){
 function updateCounts(){
   const c={strongbuy:0,accumulate:0,watch:0,speculative:0};
   STOCKS.forEach(s=>c[rating(s)]++);
-  ['SB','Acc','W','Sp'].forEach((k,i)=>{
-    const v=[c.strongbuy,c.accumulate,c.watch,c.speculative][i];
-    document.getElementById('c'+k).textContent=v;
-    document.getElementById('m'+(k==='Sp'?'W':k)).textContent=k==='Sp'?c.watch:v;
-  });
+  
+  // อัปเดตใน Hero section 
+  document.getElementById('cSB').textContent=c.strongbuy;
+  document.getElementById('cAcc').textContent=c.accumulate;
+  document.getElementById('cW').textContent=c.watch;
   document.getElementById('cSp').textContent=c.speculative;
+  
+  // อัปเดตใน Metrics Card section 
+  document.getElementById('mSB').textContent=c.strongbuy;
+  document.getElementById('mAcc').textContent=c.accumulate;
+  document.getElementById('mW').textContent=c.watch;
 }
 
 let cdv=60, cdTimer;
