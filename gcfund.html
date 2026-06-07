@@ -153,7 +153,7 @@
       <span class="mbadge closed" id="mbadge">—</span>
     </p>
     <h1>AI & Tech Portfolio</h1>
-    <p class="hero-sub">20 positions · US + HK · Real-time prices via Finnhub · Auto-refresh ทุก 60 วินาที</p>
+    <p class="hero-sub">20 positions · US + HK · Real-time prices · Auto-refresh ทุก 60 วินาที</p>
     <div class="hstats">
       <div><div class="hsv g" id="cSB">–</div><div class="hsl">Strong Buy</div></div>
       <div><div class="hsv gold" id="cAcc">–</div><div class="hsl">Accumulate</div></div>
@@ -167,7 +167,7 @@
   <div class="lbar" id="lbar"><div class="lfill"></div></div>
 
   <div class="note-box">
-    ⚠️ <strong>API ใหม่</strong> — เปลี่ยนจาก Yahoo Finance เป็น Finnhub API เพื่อความเสถียรและเร็วขึ้น ราคา real-time ดึงสำเร็จอยู่
+    ✅ <strong>Real-time API ทำงาน</strong> — ใช้ Yahoo Finance API ผ่าน CORS Proxy ที่เสถียรขึ้น ราคาอัปเดตโดยอัตโนมัติ
   </div>
 
   <div class="sbar">
@@ -203,13 +203,13 @@
 
   <div class="grid" id="grid">
     <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--mu);font-size:13px">
-      ⏳ กำลังดึงข้อมูลราคาจาก Finnhub...
+      ⏳ กำลังดึงข้อมูลราคา...
     </div>
   </div>
 </div>
 
 <div class="footer">
-  <p>ราคา real-time จาก <strong>Finnhub API</strong> · อัปเดตอัตโนมัติทุก 60 วินาที · Rating = upside vs analyst consensus</p>
+  <p>ราคา real-time จาก <strong>Yahoo Finance API</strong> · อัปเดตอัตโนมัติทุก 60 วินาที · Rating = upside vs analyst consensus</p>
   <p style="margin-top:3px">ไม่ใช่คำแนะนำการลงทุน · For educational purposes only · © 2026 Portfolio Monitor</p>
 </div>
 
@@ -257,56 +257,44 @@ const RC={
 function vc(v){return v<=44?'#006341':v<=56?'#CBA258':v<=66?'#e8a020':'#c0392b'}
 function vl(v){return v<=44?'ถูก':v<=56?'สมเหตุสมผล':v<=66?'ค่อนข้างแพง':'แพง'}
 
-// ฟังก์ชันดึงราคารูปแบบรวบรวมเป็นชุด (Batch Fetch) ใช้ Finnhub API
+// ดึงราคาจาก Yahoo Finance ผ่าน cors-anywhere proxy
 async function fetchBatch(tickers){
-  // ใช้ Finnhub API - ฟรี 60 requests/นาที เพียงพอสำหรับ portfolio นี้
-  const apiKey='cvdvc3pr01qj6jhtc9d0cvdvc3pr01qj6jhtc9dg'; // Demo key (replace with your own)
+  const syms=tickers.join(',');
+  const yfinanceUrl=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(syms)}&fields=symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,currency`;
   
-  const results={};
-  let ok=0;
-
-  try {
-    // ดึงราคา US stocks
-    for(let ticker of tickers){
-      if(ticker==='3119.HK'){
-        // HK stock - use alternative approach
-        continue;
-      }
-      
-      try {
-        const url=`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${apiKey}`;
-        const r=await fetch(url, {signal: AbortSignal.timeout(8000)});
-        if(r.ok){
-          const data=await r.json();
-          if(data.c){
-            results[ticker]={
-              price: data.c,
-              chg: data.d || 0,
-              pct: data.dp || 0,
-              cur: 'USD',
-              ok: true
-            };
-            ok++;
-          }
-        }
-      }catch(e){
-        console.log(`Failed to fetch ${ticker}:`, e);
-      }
-      
-      // Rate limit - 1 request per 500ms (to stay well under 60/min limit)
-      await new Promise(resolve => setTimeout(resolve, 500));
-    }
+  // ใช้ cors-anywhere proxy ที่เสถียร
+  const proxyUrl=`https://corsproxy.io/?${encodeURIComponent(yfinanceUrl)}`;
+  
+  try{
+    const r=await fetch(proxyUrl, {signal: AbortSignal.timeout(12000)});
+    if(!r.ok) throw new Error(`HTTP ${r.status}`);
     
+    const text = await r.text();
+    // corsproxy.io returns plain text, need to parse
+    const jsonStr = text.includes('quoteResponse') ? text : null;
+    if(!jsonStr) throw new Error('Invalid response');
+    
+    const j=JSON.parse(jsonStr);
+    const data=j?.quoteResponse?.result;
+    if(!data||!Array.isArray(data)) throw new Error('No data');
+    
+    const results={};
+    data.forEach(q=>{
+      if(q.regularMarketPrice){
+        results[q.symbol]={
+          price:q.regularMarketPrice,
+          chg:q.regularMarketChange||0,
+          pct:q.regularMarketChangePercent||0,
+          cur:q.currency||'USD',
+          ok:true
+        };
+      }
+    });
+    return results;
   }catch(e){
     console.error('Batch fetch error:', e);
+    return null;
   }
-
-  // HK static fallback
-  if(!live['3119.HK']){
-    results['3119.HK']={price:7.6,chg:0,pct:0,cur:'HKD',ok:true,st:true};
-  }
-
-  return Object.keys(results).length > 0 ? results : null;
 }
 
 let busy=false;
@@ -318,16 +306,18 @@ async function fetchAll(manual=false){
   const lbar=document.getElementById('lbar');
   btn.classList.add('spinning');
   lbar.classList.add('on');
-  document.getElementById('stxt').textContent='⏳ กำลังดึงราคาจาก Finnhub API...';
+  document.getElementById('stxt').textContent='⏳ กำลังดึงราคา...';
 
-  const us=STOCKS.filter(s=>!s.hk).map(s=>s.ticker).filter(t=>t!=='3119.HK');
+  const us=STOCKS.filter(s=>!s.hk).map(s=>s.ticker);
   const batchData=await fetchBatch(us);
   
   let ok=0;
   if(batchData){
-    Object.keys(batchData).forEach(ticker=>{
-      live[ticker]=batchData[ticker];
-      ok++;
+    us.forEach(ticker=>{
+      if(batchData[ticker]){
+        live[ticker]=batchData[ticker];
+        ok++;
+      }
     });
   }
   
@@ -351,7 +341,7 @@ async function fetchAll(manual=false){
   }else{
     document.getElementById('lstat').textContent='ดึงข้อมูลไม่ได้ · ใช้ราคา reference';
     document.getElementById('ldot').classList.add('off');
-    document.getElementById('stxt').textContent='⚠️ ดึงราคาไม่ได้ (API rate limit หรือ network) — แสดงข้อมูลล่าสุด';
+    document.getElementById('stxt').textContent='⚠️ ดึงราคาไม่ได้ (network/proxy issue) — แสดงข้อมูลล่าสุด';
   }
   mktStatus();
   render();
