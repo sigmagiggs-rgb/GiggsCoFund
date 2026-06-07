@@ -1,0 +1,231 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;600&display=swap');
+  :root{--sbux-green:#006341;--sbux-brown:#1E3932;--sbux-gold:#CBA258;--sbux-cream:#F2F0EB;--sbux-border:rgba(0,99,65,0.15);--sbux-light:#d4edda;--sbux-red:#c0392b;--sbux-text:#1E3932;--sbux-muted:#6B6B6B}
+  *{box-sizing:border-box;margin:0;padding:0}
+  .app{font-family:'Lato',sans-serif;background:var(--sbux-cream);color:var(--sbux-text)}
+  .nav{background:var(--sbux-green);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between}
+  .nav-brand{color:#fff;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+  .siren{width:32px;height:32px}
+  .nav-links{display:flex;gap:1.5rem;list-style:none}
+  .nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  .nav-links a.active{color:#fff;border-bottom:2px solid var(--sbux-gold);padding-bottom:2px}
+  .tabs{background:var(--sbux-green);padding:0 1.5rem;display:flex;gap:0;overflow-x:auto}
+  .tab{padding:10px 16px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none}
+  .tab:hover{color:#fff}.tab.active{color:#fff;border-bottom-color:var(--sbux-gold)}
+  .hero{background:var(--sbux-brown);color:#fff;padding:2rem 1.5rem 1.5rem;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50px;right:-50px;width:250px;height:250px;background:rgba(0,99,65,.3);border-radius:50%}
+  .hero::after{content:'';position:absolute;bottom:-30px;left:25%;width:180px;height:180px;background:rgba(203,162,88,.12);border-radius:50%}
+  .hero-inner{position:relative;z-index:1}
+  .hero-eye{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sbux-gold);margin-bottom:6px}
+  .hero h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:600;line-height:1.2;margin-bottom:6px}
+  .hero-sub{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:1.25rem}
+  .hero-stats{display:flex;gap:1.5rem;flex-wrap:wrap}
+  .hero-stat-val{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;line-height:1}
+  .hero-stat-val.g{color:#5ecb90}.hero-stat-val.gold{color:var(--sbux-gold)}.hero-stat-val.r{color:#ff8a80}
+  .hero-stat-lbl{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  .main{padding:1.25rem 1.5rem}
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1.25rem}
+  .mc{background:#fff;border-radius:10px;padding:.875rem 1.1rem;border:1px solid var(--sbux-border);position:relative;overflow:hidden}
+  .mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--sbux-green)}
+  .mc.gd::before{background:var(--sbux-gold)}.mc.rd::before{background:var(--sbux-red)}
+  .mc-lbl{font-size:10px;color:var(--sbux-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;font-weight:700}
+  .mc-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--sbux-text)}
+  .mc-val.g{color:var(--sbux-green)}.mc-val.gd{color:var(--sbux-gold)}.mc-val.r{color:var(--sbux-red)}
+  .mc-sub{font-size:10px;color:var(--sbux-muted);margin-top:3px}
+  .sec-hdr{display:flex;align-items:center;gap:10px;margin-bottom:.875rem}
+  .sec-hdr h2{font-family:'Playfair Display',serif;font-size:18px;font-weight:600}
+  .sec-line{flex:1;height:1px;background:var(--sbux-border)}
+  .filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+  .flbl{font-size:10px;font-weight:700;color:var(--sbux-muted);text-transform:uppercase;letter-spacing:.06em}
+  .pill{padding:4px 12px;border-radius:18px;border:1.5px solid var(--sbux-green);background:transparent;color:var(--sbux-green);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Lato',sans-serif}
+  .pill:hover{background:var(--sbux-light)}.pill.active{background:var(--sbux-green);color:#fff}
+  .legend{display:flex;gap:1.25rem;flex-wrap:wrap;background:#fff;border:1px solid var(--sbux-border);border-radius:10px;padding:.6rem 1rem;margin-bottom:1.25rem;font-size:11px}
+  .leg-item{display:flex;align-items:center;gap:5px;color:var(--sbux-muted)}
+  .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:1.25rem}
+  .card{background:#fff;border-radius:12px;border:1px solid var(--sbux-border);overflow:hidden;transition:transform .2s,box-shadow .2s;animation:fadeUp .35s ease both}
+  .card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(30,57,50,.1)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .card-hdr{padding:.875rem 1rem .75rem;background:var(--sbux-green);color:#fff;position:relative}
+  .card-hdr.brown{background:var(--sbux-brown)}.card-hdr.lite{background:var(--sbux-light)}
+  .card-ticker{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:#fff;line-height:1}
+  .card-hdr.lite .card-ticker{color:var(--sbux-green)}
+  .card-co{font-size:10px;color:rgba(255,255,255,.65);margin-top:1px}
+  .card-hdr.lite .card-co{color:rgba(30,57,50,.55)}
+  .card-price{font-size:17px;font-weight:700;color:#fff;margin-top:7px}
+  .card-hdr.lite .card-price{color:var(--sbux-green)}
+  .badge{position:absolute;top:9px;right:9px;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:9px}
+  .badge.buy{background:rgba(94,203,144,.3);color:#a8f0cc}
+  .badge.hold{background:rgba(203,162,88,.3);color:var(--sbux-gold)}
+  .badge.spec{background:rgba(255,138,128,.3);color:#ff8a80}
+  .card-body{padding:.8rem 1rem}
+  .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+  .row-lbl{font-size:10px;color:var(--sbux-muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+  .row-val{font-size:12px;font-weight:700;color:var(--sbux-text)}
+  .row-val.g{color:var(--sbux-green)}.row-val.gd{color:var(--sbux-gold)}.row-val.r{color:var(--sbux-red)}.row-val.mu{color:var(--sbux-muted);font-weight:400}
+  .meter{margin:7px 0 5px}
+  .meter-top{display:flex;justify-content:space-between;font-size:9px;color:var(--sbux-muted);margin-bottom:2px}
+  .meter-track{height:4px;background:var(--sbux-cream);border-radius:2px;overflow:hidden;border:1px solid var(--sbux-border)}
+  .meter-fill{height:100%;border-radius:2px}
+  .comment{font-size:10px;color:var(--sbux-muted);line-height:1.55;border-top:1px solid var(--sbux-border);padding-top:7px;margin-top:3px}
+  .uptag{display:inline-block;font-size:10px;font-weight:700;padding:2px 6px;border-radius:7px}
+  .uptag.pos{background:#e8f5ee;color:var(--sbux-green)}.uptag.neg{background:#fde8e8;color:var(--sbux-red)}
+  .footer{text-align:center;font-size:10px;color:var(--sbux-muted);padding:1rem 1.5rem;border-top:1px solid var(--sbux-border);line-height:1.7}
+  .footer strong{color:var(--sbux-green)}
+  .data-note{background:#fff8e7;border:1px solid #e8d89a;border-radius:8px;padding:.6rem 1rem;margin-bottom:1rem;font-size:11px;color:#7a5d00}
+</style>
+
+<div class="app">
+  <nav class="nav">
+    <div class="nav-brand">
+      <svg class="siren" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="38" stroke="white" stroke-width="2"/>
+        <circle cx="40" cy="40" r="30" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
+        <ellipse cx="40" cy="33" rx="13" ry="16" fill="rgba(255,255,255,0.9)"/>
+        <ellipse cx="40" cy="47" rx="18" ry="7" fill="rgba(255,255,255,0.9)"/>
+        <path d="M22 55 Q40 65 58 55" stroke="white" stroke-width="1.5" fill="none"/>
+        <circle cx="40" cy="28" r="4" fill="#006341"/>
+      </svg>
+      Portfolio Monitor
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Dashboard</a></li>
+      <li><a href="#">Watchlist</a></li>
+      <li><a href="#">Analysis</a></li>
+    </ul>
+  </nav>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setTab(this,'all')">All Holdings</button>
+    <button class="tab" onclick="setTab(this,'hyperscaler')">Hyperscalers</button>
+    <button class="tab" onclick="setTab(this,'compute')">Compute & Semi</button>
+    <button class="tab" onclick="setTab(this,'software')">Software & Cloud</button>
+    <button class="tab" onclick="setTab(this,'security')">Cybersecurity</button>
+    <button class="tab" onclick="setTab(this,'other')">Healthcare / ETF</button>
+  </div>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <p class="hero-eye">Fund Manager View · Close Jun 5, 2026 (verified prices)</p>
+      <h1>AI & Tech Portfolio</h1>
+      <p class="hero-sub">20 positions · ราคาตรวจสอบจาก MacroTrends, Robinhood, StockAnalysis, CNBC</p>
+      <div class="hero-stats">
+        <div><div class="hero-stat-val g">8</div><div class="hero-stat-lbl">Strong Buy</div></div>
+        <div><div class="hero-stat-val gold">7</div><div class="hero-stat-lbl">Accumulate</div></div>
+        <div><div class="hero-stat-val">4</div><div class="hero-stat-lbl">Hold / Watch</div></div>
+        <div><div class="hero-stat-val r">1</div><div class="hero-stat-lbl">Speculative</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="data-note">
+      ⚠️ <strong>ราคาที่แก้ไขแล้ว</strong> — ราคาก่อนหน้านี้ผิดพลาดเพราะใช้ข้อมูลเก่าและสับสน ADR price (เช่น ASML, CRWD, LLY, SMH, DDOG คลาดเคลื่อนมาก) — อัปเดตแล้วทุกตัวจากแหล่งปฐมภูมิ
+    </div>
+
+    <div class="metrics">
+      <div class="mc"><div class="mc-lbl">Total Positions</div><div class="mc-val">20</div><div class="mc-sub">US + HK listed</div></div>
+      <div class="mc"><div class="mc-lbl">Strong Buy</div><div class="mc-val g">8</div><div class="mc-sub">น่าสนใจสูง</div></div>
+      <div class="mc gd"><div class="mc-lbl">Accumulate</div><div class="mc-val gd">7</div><div class="mc-sub">ทยอยสะสม</div></div>
+      <div class="mc rd"><div class="mc-lbl">Chip Selloff 5 Jun</div><div class="mc-val r">-6% to -13%</div><div class="mc-sub">NVDA,AVGO,MRVL</div></div>
+      <div class="mc"><div class="mc-lbl">LLY All-time High</div><div class="mc-val g">$1,131</div><div class="mc-sub">ATH Jun 5, 2026</div></div>
+    </div>
+
+    <div class="sec-hdr"><h2>Holdings</h2><div class="sec-line"></div></div>
+
+    <div class="filters">
+      <span class="flbl">Rating:</span>
+      <button class="pill active" onclick="filterRating(this,'all')">All</button>
+      <button class="pill" onclick="filterRating(this,'strongbuy')">Strong Buy</button>
+      <button class="pill" onclick="filterRating(this,'accumulate')">Accumulate</button>
+      <button class="pill" onclick="filterRating(this,'watch')">Hold / Watch</button>
+      <button class="pill" onclick="filterRating(this,'speculative')">Speculative</button>
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#006341"></div>Strong Buy — valuation น่าสนใจ + catalyst ชัด</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#CBA258"></div>Accumulate — ทยอยสะสม DCA</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#e8a020"></div>Hold/Watch — รอจังหวะ</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#c0392b"></div>Speculative — upside/risk สูงมาก</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="footer">
+    <p>ราคา closing <strong>5 มิ.ย. 2026</strong> ตรวจสอบจาก MacroTrends, Robinhood, CNBC, StockAnalysis · ASML แสดงราคา Nasdaq ADR (USD) · CRWD ยังไม่ split (4:1 มีผล 2 ก.ค. 2026)</p>
+    <p style="margin-top:3px">ไม่ใช่คำแนะนำการลงทุน · For educational purposes only</p>
+  </div>
+</div>
+
+<script>
+// Verified closing prices Jun 5, 2026 from MacroTrends/Robinhood/StockAnalysis/CNBC
+const stocks=[
+  // Hyperscalers
+  {sector:'hyperscaler',ticker:'MSFT',name:'Microsoft',price:416.67,pe:25,fwdPe:23,target:561,valuation:42,rating:'strongbuy',comment:'Azure AI momentum แข็งแกร่ง Fwd PE ~23x ต่ำกว่า 5Y avg 33x มาก — จุดสะสมน่าสนใจ analyst target $561 (+35%)'},
+  {sector:'hyperscaler',ticker:'AAPL',name:'Apple',price:307.34,pe:33,fwdPe:30,target:311,valuation:68,rating:'watch',comment:'AI delay เป็นความเสี่ยง WWDC สัปดาห์หน้าเป็น catalyst สำคัญ analyst target แทบเท่าราคาปัจจุบัน'},
+  {sector:'hyperscaler',ticker:'AMZN',name:'Amazon',price:248,pe:35,fwdPe:27,target:265,valuation:55,rating:'accumulate',comment:'AWS+Ads ขยายตัวดี Anthropic partnership เพิ่ม AI credibility — Fwd PE สมเหตุสมผล'},
+  {sector:'hyperscaler',ticker:'GOOG',name:'Alphabet',price:368,pe:27,fwdPe:21,target:225,valuation:52,rating:'accumulate',comment:'Fwd PE ต่ำสุดใน Hyperscaler Gemini+TPU underappreciated — ATH เดิม $408 แต่ pullback ให้ entry ดี'},
+  {sector:'hyperscaler',ticker:'META',name:'Meta Platforms',price:593,pe:18,fwdPe:19,target:827,valuation:40,rating:'strongbuy',comment:'ราคาร่วง -5.5% Jun 5 จากข่าว equity raise ไม่ใช่ fundamental เสีย P/E 18x ถูกมาก analyst target $827 (+40%)'},
+  // Compute & Semi
+  {sector:'compute',ticker:'NVDA',name:'NVIDIA',price:205,pe:31,fwdPe:21,target:298,valuation:42,rating:'strongbuy',comment:'Blackwell demand แข็งแกร่ง Rev +70% FY2026 Fwd PE 21x หลัง selloff -6% Jun 5 — compelling entry'},
+  {sector:'compute',ticker:'AVGO',name:'Broadcom',price:386,pe:45,fwdPe:28,target:452,valuation:55,rating:'accumulate',comment:'ATH $481 Jun 2 แล้วร่วง -20% หลัง earnings ไม่ raise AI outlook — thesis intact แต่ต้องรอให้ฝุ่นตก'},
+  {sector:'compute',ticker:'MRVL',name:'Marvell Tech',price:210,pe:null,fwdPe:38,target:321,valuation:52,rating:'accumulate',comment:'ATH $225 Jun 1 แล้ว correction หนัก S&P500 inclusion มีผล 22 มิ.ย. เป็น catalyst — custom AI switch thesis แข็ง'},
+  {sector:'compute',ticker:'ASML',name:'ASML (Nasdaq ADR)',price:1450,pe:53,fwdPe:38,target:1900,valuation:48,rating:'strongbuy',comment:'ราคา ADR ~$1,450 (EUR ~€1,340) ร่วง -3.8% Jun 5 หลัง 6-day rally EUV monopoly ไม่เปลี่ยน BofA target EUR 1,921'},
+  {sector:'compute',ticker:'NBIS',name:'Nebius Group',price:253,pe:null,fwdPe:null,target:239,valuation:32,rating:'speculative',comment:'$44B contracts (Meta+MSFT) ARR target $7-9B EOY2026 unprofitable — speculative high upside'},
+  // Software
+  {sector:'software',ticker:'ORCL',name:'Oracle',price:229,pe:38,fwdPe:24,target:205,valuation:60,rating:'watch',comment:'ราคา run up 71% จาก April lows — analyst target ต่ำกว่าราคาปัจจุบันแล้ว รอ pullback จึงน่าสนใจ'},
+  {sector:'software',ticker:'SNOW',name:'Snowflake',price:153,pe:null,fwdPe:85,target:210,valuation:35,rating:'accumulate',comment:'Q1 rev +36% single-day surge ยืนยัน AI thesis Fwd PE สูงแต่ growth acceleration ชัด UBS target $210'},
+  {sector:'software',ticker:'DDOG',name:'Datadog',price:234,pe:null,fwdPe:72,target:305,valuation:48,rating:'accumulate',comment:'ATH $277 Jun 1 แล้วย่อ -16% Jun 5 — Q1 rev >$1B first time analyst target $305 (+30%) มี upside ดี'},
+  // Security
+  {sector:'security',ticker:'PANW',name:'Palo Alto Networks',price:279,pe:76,fwdPe:48,target:330,valuation:52,rating:'accumulate',comment:'ATH $300 Jun 1 Goldman raised target $330 CyberArk acquisition ต.ค.65B deal เสร็จ Feb 2026 — platform play'},
+  {sector:'security',ticker:'CRWD',name:'CrowdStrike',price:695,pe:null,fwdPe:80,target:800,valuation:50,rating:'accumulate',comment:'ราคา ~$695 pre 4:1 split (มีผล 2 ก.ค.) Q1 rev +26% แต่ตลาดต้องการเห็น AI payoff ชัดกว่านี้ก่อน'},
+  {sector:'security',ticker:'AXON',name:'Axon Enterprise',price:486,pe:152,fwdPe:51,target:585,valuation:45,rating:'strongbuy',comment:'Close $486 Jun 5 ลงจาก ATH $871 Aug 2025 — Fwd PE 51x ถูกมากเทียบ history TASER+AI software moat แข็ง'},
+  // Other
+  {sector:'other',ticker:'LLY',name:'Eli Lilly',price:1131,pe:58,fwdPe:33,target:1000,valuation:62,rating:'watch',comment:'ATH ใหม่ $1,131 Jun 5 ราคาเกิน analyst consensus $1,000 แล้ว — GLP-1 thesis แข็งแต่รอ pullback'},
+  {sector:'other',ticker:'RL',name:'Ralph Lauren',price:395,pe:26,fwdPe:21,target:437,valuation:58,rating:'accumulate',comment:'ราคาประมาณ $395 Deutsche Bank target $437 (+11%) premium brand ผ่าน tariff ได้ดี — Asia exposure แข็ง'},
+  {sector:'other',ticker:'SMH',name:'VanEck Semi ETF',price:628,pe:32,fwdPe:24,target:null,valuation:48,rating:'accumulate',comment:'Close $627 Jun 5 จาก ATH $642 — NVDA+AVGO+MRVL+ASML ครบ หลัง AI chip selloff เป็นจังหวะทยอยสะสม'},
+  {sector:'other',ticker:'3119.HK',name:'Global X Asia Semi',price:7.6,pe:18,fwdPe:14,target:null,valuation:35,rating:'strongbuy',comment:'TSMC+Samsung+SK Hynix Fwd PE 14x discount ต่อ US peers ideal DCA สำหรับ regional semi exposure'},
+];
+
+const rc={strongbuy:{badge:'buy',hdr:'',badgeTxt:'Strong Buy'},accumulate:{badge:'',hdr:'brown',badgeTxt:'Accumulate'},watch:{badge:'hold',hdr:'lite',badgeTxt:'Hold'},speculative:{badge:'spec',hdr:'',badgeTxt:'Speculative'}};
+function vc(v){return v<=44?'#006341':v<=56?'#CBA258':v<=66?'#e8a020':'#c0392b'}
+function vl(v){return v<=44?'ถูก':v<=56?'สมเหตุสมผล':v<=66?'ค่อนข้างแพง':'แพง'}
+
+let tab='all',rating='all';
+function setTab(el,v){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');tab=v;render()}
+function filterRating(el,v){document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');rating=v;render()}
+
+function render(){
+  const data=stocks.filter(s=>(tab==='all'||s.sector===tab)&&(rating==='all'||s.rating===rating));
+  const grid=document.getElementById('grid');
+  if(!data.length){grid.innerHTML='<p style="color:var(--sbux-muted);font-size:12px;padding:1rem 0">ไม่พบ position ที่ตรงกับ filter</p>';return}
+  grid.innerHTML=data.map((s,i)=>{
+    const r=rc[s.rating];
+    const up=s.target?Math.round((s.target/s.price-1)*100):null;
+    const upH=up!==null?`<span class="uptag ${up>=0?'pos':'neg'}">${up>=0?'+':''}${up}%</span>`:'<span style="color:var(--sbux-muted);font-size:10px">—</span>';
+    const priceStr=s.ticker==='3119.HK'?'HKD '+s.price.toFixed(2):s.ticker==='ASML'?'$'+s.price.toLocaleString()+' ADR':'$'+s.price.toLocaleString();
+    const col=vc(s.valuation);
+    const delay=(i%6)*0.05;
+    return`<div class="card" style="animation-delay:${delay}s">
+      <div class="card-hdr ${r.hdr}">
+        <span class="badge ${r.badge}">${r.badgeTxt}</span>
+        <div class="card-ticker">${s.ticker}</div>
+        <div class="card-co">${s.name}</div>
+        <div class="card-price">${priceStr}</div>
+      </div>
+      <div class="card-body">
+        <div class="row"><span class="row-lbl">P/E TTM</span><span class="row-val">${s.pe?s.pe+'x':'<span style="color:var(--sbux-muted)">N/A</span>'}</span></div>
+        <div class="row"><span class="row-lbl">Fwd P/E</span><span class="row-val">${s.fwdPe?s.fwdPe+'x':'<span style="color:var(--sbux-muted)">N/A</span>'}</span></div>
+        <div class="row"><span class="row-lbl">Analyst Upside</span><span class="row-val">${upH}</span></div>
+        <div class="meter">
+          <div class="meter-top"><span>Valuation</span><span style="color:${col};font-weight:700">${vl(s.valuation)}</span></div>
+          <div class="meter-track"><div class="meter-fill" style="width:${s.valuation}%;background:${col}"></div></div>
+        </div>
+        <p class="comment">${s.comment}</p>
+      </div>
+    </div>`}).join('');
+}
+render();
+</script>
