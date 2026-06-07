@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI & Tech Portfolio Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--g:#006341;--br:#1E3932;--go:#CBA258;--cr:#F2F0EB;--bo:rgba(0,99,65,0.15);--li:#d4edda;--re:#c0392b;--tx:#1E3932;--mu:#6B6B6B}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Lato',sans-serif;background:var(--cr);color:var(--tx);min-height:100vh}
+    .nav{background:var(--g);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+    .nav-brand{color:#fff;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+    .siren{width:32px;height:32px}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .nav-links{display:flex;gap:1.5rem;list-style:none}
+    .nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+    .nav-links a.active{color:#fff;border-bottom:2px solid var(--go);padding-bottom:2px}
+    .rbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .2s;font-family:'Lato',sans-serif}
+    .rbtn:hover{background:rgba(255,255,255,.25)}
+    .rbtn.spinning .si{animation:spin .8s linear infinite}
+    .si{display:inline-block}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .tabs{background:var(--g);padding:0 1.5rem;display:flex;overflow-x:auto;border-top:1px solid rgba(255,255,255,.1)}
+    .tab{padding:10px 16px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:'Lato',sans-serif}
+    .tab:hover{color:#fff}.tab.active{color:#fff;border-bottom-color:var(--go)}
+    .hero{background:var(--br);color:#fff;padding:2rem 1.5rem 1.5rem;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-50px;right:-50px;width:250px;height:250px;background:rgba(0,99,65,.3);border-radius:50%}
+    .hero::after{content:'';position:absolute;bottom:-30px;left:25%;width:180px;height:180px;background:rgba(203,162,88,.12);border-radius:50%}
+    .hero-inner{position:relative;z-index:1}
+    .heye{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--go);margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .ldot{width:7px;height:7px;border-radius:50%;background:#5ecb90;animation:pulse 2s infinite;flex-shrink:0}
+    .ldot.off{background:#e8a020;animation:none}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+    .hero h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:600;line-height:1.2;margin-bottom:6px}
+    .hero-sub{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:1.25rem}
+    .hstats{display:flex;gap:1.5rem;flex-wrap:wrap}
+    .hsv{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;line-height:1}
+    .hsv.g{color:#5ecb90}.hsv.gold{color:var(--go)}.hsv.r{color:#ff8a80}
+    .hsl{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+    .main{padding:1.25rem 1.5rem}
+    .lbar{height:2px;background:var(--li);border-radius:1px;overflow:hidden;margin-bottom:1rem;display:none}
+    .lbar.on{display:block}
+    .lfill{height:100%;background:var(--g);border-radius:1px;animation:ld 1.5s ease-in-out infinite}
+    @keyframes ld{0%{width:0%;margin-left:0}50%{width:60%;margin-left:20%}100%{width:0%;margin-left:100%}}
+    .sbar{background:#fff;border:1px solid var(--bo);border-radius:10px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;font-size:11px;flex-wrap:wrap;gap:8px}
+    .slive{color:var(--g);font-weight:700}
+    .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1.25rem}
+    .mc{background:#fff;border-radius:10px;padding:.875rem 1.1rem;border:1px solid var(--bo);position:relative;overflow:hidden}
+    .mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--g)}
+    .mc.gd::before{background:var(--go)}.mc.rd::before{background:var(--re)}
+    .ml{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;font-weight:700}
+    .mv{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--tx)}
+    .mv.g{color:var(--g)}.mv.gd{color:var(--go)}.mv.r{color:var(--re)}
+    .ms{font-size:10px;color:var(--mu);margin-top:3px}
+    .sech{display:flex;align-items:center;gap:10px;margin-bottom:.875rem}
+    .sech h2{font-family:'Playfair Display',serif;font-size:18px;font-weight:600}
+    .secl{flex:1;height:1px;background:var(--bo)}
+    .filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+    .flbl{font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em}
+    .pill{padding:4px 12px;border-radius:18px;border:1.5px solid var(--g);background:transparent;color:var(--g);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Lato',sans-serif}
+    .pill:hover{background:var(--li)}.pill.active{background:var(--g);color:#fff}
+    .leg{display:flex;gap:1.25rem;flex-wrap:wrap;background:#fff;border:1px solid var(--bo);border-radius:10px;padding:.6rem 1rem;margin-bottom:1.25rem;font-size:11px}
+    .li2{display:flex;align-items:center;gap:5px;color:var(--mu)}
+    .ld2{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:1.25rem}
+    .card{background:#fff;border-radius:12px;border:1px solid var(--bo);overflow:hidden;transition:transform .2s,box-shadow .2s;animation:fu .35s ease both}
+    .card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(30,57,50,.1)}
+    @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .ch{padding:.875rem 1rem .75rem;background:var(--g);color:#fff;position:relative}
+    .ch.br{background:var(--br)}.ch.lt{background:var(--li)}
+    .ct{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:#fff;line-height:1}
+    .ch.lt .ct{color:var(--g)}
+    .cn{font-size:10px;color:rgba(255,255,255,.65);margin-top:1px}
+    .ch.lt .cn{color:rgba(30,57,50,.55)}
+    .cpr{display:flex;align-items:baseline;gap:6px;margin-top:7px}
+    .cp{font-size:18px;font-weight:700;color:#fff}
+    .ch.lt .cp{color:var(--g)}
+    .cc{font-size:11px;font-weight:700;padding:1px 6px;border-radius:6px}
+    .cc.pos{background:rgba(94,203,144,.25);color:#a8f0cc}
+    .cc.neg{background:rgba(255,100,100,.25);color:#ffaaaa}
+    .cc.zer{background:rgba(255,255,255,.15);color:rgba(255,255,255,.7)}
+    .ch.lt .cc.pos{background:rgba(0,99,65,.15);color:#006341}
+    .ch.lt .cc.neg{background:rgba(192,57,43,.12);color:#c0392b}
+    .badge{position:absolute;top:9px;right:9px;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:9px}
+    .badge.buy{background:rgba(94,203,144,.3);color:#a8f0cc}
+    .badge.hold{background:rgba(203,162,88,.3);color:var(--go)}
+    .badge.spec{background:rgba(255,138,128,.3);color:#ff8a80}
+    .cb{padding:.8rem 1rem}
+    .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+    .rl{font-size:10px;color:var(--mu);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+    .rv{font-size:12px;font-weight:700;color:var(--tx)}
+    .rv.g{color:var(--g)}.rv.r{color:var(--re)}
+    .mtr{margin:7px 0 5px}
+    .mt{display:flex;justify-content:space-between;font-size:9px;color:var(--mu);margin-bottom:2px}
+    .mk{height:4px;background:var(--cr);border-radius:2px;overflow:hidden;border:1px solid var(--bo)}
+    .mf{height:100%;border-radius:2px;transition:width .6s ease}
+    .cmt{font-size:10px;color:var(--mu);line-height:1.55;border-top:1px solid var(--bo);padding-top:7px;margin-top:3px}
+    .ut{display:inline-block;font-size:10px;font-weight:700;padding:2px 6px;border-radius:7px}
+    .ut.pos{background:#e8f5ee;color:var(--g)}.ut.neg{background:#fde8e8;color:var(--re)}
+    .mbadge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+    .mbadge.open{background:#e8f5ee;color:#006341}
+    .mbadge.closed{background:#fff3cd;color:#856404}
+    .mbadge.pre{background:#e3f2fd;color:#1565c0}
+    .footer{text-align:center;font-size:10px;color:var(--mu);padding:1rem 1.5rem;border-top:1px solid var(--bo);line-height:1.7}
+    .footer strong{color:var(--g)}
+    @media(max-width:600px){.nav-links{display:none}.hero h1{font-size:22px}.grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:400px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <svg class="siren" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="38" stroke="white" stroke-width="2"/>
+      <circle cx="40" cy="40" r="30" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
+      <ellipse cx="40" cy="33" rx="13" ry="16" fill="rgba(255,255,255,0.9)"/>
+      <ellipse cx="40" cy="47" rx="18" ry="7" fill="rgba(255,255,255,0.9)"/>
+      <path d="M22 55 Q40 65 58 55" stroke="white" stroke-width="1.5" fill="none"/>
+      <circle cx="40" cy="28" r="4" fill="#006341"/>
+    </svg>
+    Portfolio Monitor
+  </div>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#" class="active">Dashboard</a></li>
+      <li><a href="#">Watchlist</a></li>
+      <li><a href="#">Analysis</a></li>
+    </ul>
+    <button class="rbtn" onclick="fetchAll(true)" id="rBtn">
+      <span class="si" id="si">↻</span> Refresh
+    </button>
+  </div>
+</nav>
+
+<div class="tabs">
+  <button class="tab active" onclick="setTab(this,'all')">All Holdings</button>
+  <button class="tab" onclick="setTab(this,'hyperscaler')">Hyperscalers</button>
+  <button class="tab" onclick="setTab(this,'compute')">Compute & Semi</button>
+  <button class="tab" onclick="setTab(this,'software')">Software & Cloud</button>
+  <button class="tab" onclick="setTab(this,'security')">Cybersecurity</button>
+  <button class="tab" onclick="setTab(this,'other')">Healthcare / ETF</button>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <p class="heye">
+      <span class="ldot" id="ldot"></span>
+      <span id="lstat">กำลังดึงข้อมูลราคา...</span>
+      <span class="mbadge closed" id="mbadge">—</span>
+    </p>
+    <h1>AI & Tech Portfolio</h1>
+    <p class="hero-sub">20 positions · US + HK · Real-time prices via Yahoo Finance · Auto-refresh ทุก 60 วินาที</p>
+    <div class="hstats">
+      <div><div class="hsv g" id="cSB">–</div><div class="hsl">Strong Buy</div></div>
+      <div><div class="hsv gold" id="cAcc">–</div><div class="hsl">Accumulate</div></div>
+      <div><div class="hsv" id="cW">–</div><div class="hsl">Hold / Watch</div></div>
+      <div><div class="hsv r" id="cSp">–</div><div class="hsl">Speculative</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="lbar" id="lbar"><div class="lfill"></div></div>
+
+  <div class="sbar">
+    <div id="stxt" style="color:var(--mu)">กำลังโหลด...</div>
+    <div style="font-size:10px;color:var(--mu)">Auto-refresh ใน <b id="cd">60</b>s</div>
+  </div>
+
+  <div class="metrics">
+    <div class="mc"><div class="ml">Total Positions</div><div class="mv">20</div><div class="ms">US + HK listed</div></div>
+    <div class="mc"><div class="ml">Strong Buy</div><div class="mv g" id="mSB">–</div><div class="ms">น่าสนใจสูง</div></div>
+    <div class="mc gd"><div class="ml">Accumulate</div><div class="mv gd" id="mAcc">–</div><div class="ms">ทยอยสะสม DCA</div></div>
+    <div class="mc rd"><div class="ml">Hold / Watch</div><div class="mv r" id="mW">–</div><div class="ms">รอจังหวะ</div></div>
+    <div class="mc"><div class="ml">อัปเดตล่าสุด</div><div class="mv" id="mT" style="font-size:15px">–</div><div class="ms" id="mD">–</div></div>
+  </div>
+
+  <div class="sech"><h2>Holdings</h2><div class="secl"></div></div>
+
+  <div class="filters">
+    <span class="flbl">Rating:</span>
+    <button class="pill active" onclick="filterR(this,'all')">All</button>
+    <button class="pill" onclick="filterR(this,'strongbuy')">Strong Buy</button>
+    <button class="pill" onclick="filterR(this,'accumulate')">Accumulate</button>
+    <button class="pill" onclick="filterR(this,'watch')">Hold / Watch</button>
+    <button class="pill" onclick="filterR(this,'speculative')">Speculative</button>
+  </div>
+
+  <div class="leg">
+    <div class="li2"><div class="ld2" style="background:#006341"></div>Strong Buy — upside &gt;25% vs analyst target</div>
+    <div class="li2"><div class="ld2" style="background:#CBA258"></div>Accumulate — upside 10–25%</div>
+    <div class="li2"><div class="ld2" style="background:#e8a020"></div>Hold/Watch — upside &lt;10% หรือ overvalued</div>
+    <div class="li2"><div class="ld2" style="background:#c0392b"></div>Speculative — ยังขาดทุน / upside asymmetric</div>
+  </div>
+
+  <div class="grid" id="grid">
+    <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--mu);font-size:13px">
+      ⏳ กำลังดึงข้อมูลราคาจาก Yahoo Finance...
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>ราคาดึงจาก <strong>Yahoo Finance</strong> via CORS proxy · อัปเดตอัตโนมัติทุก 60 วินาที · Rating = upside vs analyst consensus target</p>
+  <p style="margin-top:3px">ไม่ใช่คำแนะนำการลงทุน · For educational purposes only · © 2026 Portfolio Monitor</p>
+</div>
+
+<script>
+const STOCKS=[
+  {sector:'hyperscaler',ticker:'MSFT',name:'Microsoft',pe:25,fwdPe:23,target:561,val:42,cmt:'Azure AI momentum แข็งแกร่ง Fwd PE ~23x ต่ำกว่า 5Y avg 33x — จุดสะสมน่าสนใจ'},
+  {sector:'hyperscaler',ticker:'AAPL',name:'Apple',pe:33,fwdPe:30,target:311,val:68,cmt:'AI delay เป็นความเสี่ยง WWDC เป็น catalyst สำคัญ analyst target แทบเท่าราคา'},
+  {sector:'hyperscaler',ticker:'AMZN',name:'Amazon',pe:35,fwdPe:27,target:265,val:55,cmt:'AWS+Ads ขยายตัวดี Anthropic partnership เพิ่ม AI credibility'},
+  {sector:'hyperscaler',ticker:'GOOG',name:'Alphabet',pe:27,fwdPe:21,target:225,val:52,cmt:'Fwd PE ต่ำสุดใน Hyperscaler Gemini+TPU underappreciated — pullback ให้ entry ดี'},
+  {sector:'hyperscaler',ticker:'META',name:'Meta Platforms',pe:18,fwdPe:19,target:827,val:40,cmt:'P/E 18x ถูกมาก equity raise ไม่ใช่ fundamental เสีย analyst target $827 (+40%)'},
+  {sector:'compute',ticker:'NVDA',name:'NVIDIA',pe:31,fwdPe:21,target:298,val:42,cmt:'Blackwell demand แข็งแกร่ง Rev +70% FY2026 Fwd PE 21x — compelling entry'},
+  {sector:'compute',ticker:'AVGO',name:'Broadcom',pe:45,fwdPe:28,target:452,val:55,cmt:'ATH $481 Jun 2 แล้วร่วง -20% thesis intact แต่รอให้ฝุ่นตก'},
+  {sector:'compute',ticker:'MRVL',name:'Marvell Tech',pe:null,fwdPe:38,target:321,val:52,cmt:'S&P500 inclusion มีผล 22 มิ.ย. เป็น catalyst — custom AI switch thesis แข็ง'},
+  {sector:'compute',ticker:'ASML',name:'ASML (Nasdaq ADR)',pe:53,fwdPe:38,target:1900,val:48,cmt:'EUV monopoly ไม่เปลี่ยน BofA target $1,900 — pullback Jun 5 ให้ entry ดี'},
+  {sector:'compute',ticker:'NBIS',name:'Nebius Group',pe:null,fwdPe:null,target:239,val:32,cmt:'$44B contracts (Meta+MSFT) ARR target $7-9B EOY2026 — speculative high upside',spec:true},
+  {sector:'software',ticker:'ORCL',name:'Oracle',pe:38,fwdPe:24,target:205,val:60,cmt:'ราคา run up 71% จาก April lows — analyst target ต่ำกว่าราคาปัจจุบัน รอ pullback'},
+  {sector:'software',ticker:'SNOW',name:'Snowflake',pe:null,fwdPe:85,target:210,val:35,cmt:'Q1 rev +36% AI thesis ชัด UBS target $210 — growth acceleration น่าสนใจ'},
+  {sector:'software',ticker:'DDOG',name:'Datadog',pe:null,fwdPe:72,target:305,val:48,cmt:'Q1 rev >$1B first time — analyst target $305 (+30%) มี upside ดีหลัง pullback'},
+  {sector:'security',ticker:'PANW',name:'Palo Alto Networks',pe:76,fwdPe:48,target:330,val:52,cmt:'Goldman raised target $330 CyberArk acquisition เสร็จ Feb 2026 — platform play'},
+  {sector:'security',ticker:'CRWD',name:'CrowdStrike',pe:null,fwdPe:80,target:800,val:50,cmt:'Q1 rev +26% Stock split 4:1 มีผล 2 ก.ค. 2026 — AI cybersecurity leader'},
+  {sector:'security',ticker:'AXON',name:'Axon Enterprise',pe:152,fwdPe:51,target:585,val:45,cmt:'Fwd PE 51x ถูกมากเทียบ history TASER+AI software moat แข็งแกร่ง'},
+  {sector:'other',ticker:'LLY',name:'Eli Lilly',pe:58,fwdPe:33,target:1000,val:62,cmt:'ATH ใหม่ Jun 5 GLP-1+Alzheimer thesis แข็ง — ราคาเกิน analyst target รอ pullback'},
+  {sector:'other',ticker:'RL',name:'Ralph Lauren',pe:26,fwdPe:21,target:437,val:58,cmt:'Deutsche Bank target $437 premium brand ผ่าน tariff ได้ดี — Asia exposure แข็ง'},
+  {sector:'other',ticker:'SMH',name:'VanEck Semi ETF',pe:32,fwdPe:24,target:null,val:48,cmt:'NVDA+AVGO+MRVL+ASML ครบ — หลัง AI chip selloff จังหวะทยอยสะสม DCA'},
+  {sector:'other',ticker:'3119.HK',name:'Global X Asia Semi',pe:18,fwdPe:14,target:null,val:35,cmt:'TSMC+Samsung+SK Hynix Fwd PE 14x discount ต่อ US peers — ideal DCA ภูมิภาค',hk:true},
+];
+
+const live={};
+
+function rating(s){
+  if(s.spec) return 'speculative';
+  const d=live[s.ticker];
+  if(!d||!s.target){return s.val<=44?'strongbuy':s.val<=56?'accumulate':'watch'}
+  const up=(s.target/d.price-1)*100;
+  return up>=25?'strongbuy':up>=10?'accumulate':'watch';
+}
+
+const RC={
+  strongbuy:{badge:'buy',hdr:'',txt:'Strong Buy'},
+  accumulate:{badge:'',hdr:'br',txt:'Accumulate'},
+  watch:{badge:'hold',hdr:'lt',txt:'Hold / Watch'},
+  speculative:{badge:'spec',hdr:'',txt:'Speculative'},
+};
+
+function vc(v){return v<=44?'#006341':v<=56?'#CBA258':v<=66?'#e8a020':'#c0392b'}
+function vl(v){return v<=44?'ถูก':v<=56?'สมเหตุสมผล':v<=66?'ค่อนข้างแพง':'แพง'}
+
+async function fetchOne(sym){
+  const url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=2d`;
+  const proxy=`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+  try{
+    const r=await fetch(proxy,{signal:AbortSignal.timeout(9000)});
+    if(!r.ok) throw 0;
+    const j=await r.json();
+    const m=JSON.parse(j.contents)?.chart?.result?.[0]?.meta;
+    if(!m) throw 0;
+    const price=m.regularMarketPrice??m.previousClose;
+    const prev=m.chartPreviousClose??m.previousClose;
+    const chg=price-prev, pct=prev?(chg/prev)*100:0;
+    return{price,chg,pct,cur:m.currency||'USD',ok:true};
+  }catch{return{ok:false}}
+}
+
+let busy=false;
+async function fetchAll(manual=false){
+  if(busy) return;
+  busy=true;
+  resetCD();
+  const btn=document.getElementById('rBtn');
+  const lbar=document.getElementById('lbar');
+  btn.classList.add('spinning');
+  lbar.classList.add('on');
+  document.getElementById('stxt').textContent='⏳ กำลังดึงราคาจาก Yahoo Finance...';
+
+  const us=STOCKS.filter(s=>!s.hk);
+  const res=await Promise.allSettled(us.map(s=>fetchOne(s.ticker)));
+  let ok=0;
+  us.forEach((s,i)=>{
+    const r=res[i];
+    if(r.status==='fulfilled'&&r.value.ok){live[s.ticker]=r.value;ok++;}
+  });
+  // HK static fallback
+  if(!live['3119.HK']) live['3119.HK']={price:7.6,chg:0,pct:0,cur:'HKD',ok:true,st:true};
+
+  btn.classList.remove('spinning');
+  lbar.classList.remove('on');
+  busy=false;
+
+  const now=new Date();
+  const ts=now.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const ds=now.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('mT').textContent=ts;
+  document.getElementById('mD').textContent=ds;
+
+  if(ok>0){
+    document.getElementById('lstat').textContent=`Live Data · ${ts}`;
+    document.getElementById('ldot').classList.remove('off');
+    document.getElementById('stxt').innerHTML=`<span class="slive">✓ Live</span> ดึงราคาสำเร็จ ${ok}/${us.length} ตัว · ${ts}`;
+  }else{
+    document.getElementById('lstat').textContent='ดึงข้อมูลไม่ได้ · ใช้ราคา reference';
+    document.getElementById('ldot').classList.add('off');
+    document.getElementById('stxt').textContent='⚠️ ดึงราคาไม่ได้ (network/CORS) — แสดงราคา reference ล่าสุด';
+  }
+  mktStatus();
+  render();
+  updateCounts();
+}
+
+function mktStatus(){
+  const el=document.getElementById('mbadge');
+  const now=new Date();
+  const utc=now.getTime()+now.getTimezoneOffset()*60000;
+  const et=new Date(utc+(-4)*3600000);
+  const h=et.getHours(),mn=et.getMinutes(),d=et.getDay();
+  const mins=h*60+mn;
+  if(d===0||d===6){el.textContent='Market Closed';el.className='mbadge closed';}
+  else if(mins>=570&&mins<960){el.textContent='🟢 Market Open';el.className='mbadge open';}
+  else if(mins>=540&&mins<570){el.textContent='🔵 Pre-Market';el.className='mbadge pre';}
+  else{el.textContent='🟡 After Hours';el.className='mbadge closed';}
+}
+
+let aTab='all',aRat='all';
+function setTab(el,v){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');aTab=v;render()}
+function filterR(el,v){document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');aRat=v;render()}
+
+function render(){
+  const data=STOCKS.filter(s=>(aTab==='all'||s.sector===aTab)&&(aRat==='all'||rating(s)===aRat));
+  const grid=document.getElementById('grid');
+  if(!data.length){grid.innerHTML='<p style="color:var(--mu);font-size:12px;padding:1rem 0;grid-column:1/-1">ไม่พบ position ที่ตรงกับ filter</p>';return}
+  grid.innerHTML=data.map((s,i)=>{
+    const r=rating(s), rc=RC[r];
+    const d=live[s.ticker];
+    const price=d?.price??null;
+    const pct=d?.pct??null;
+    const cur=d?.cur??(s.hk?'HKD':'USD');
+
+    let pstr='กำลังโหลด...';
+    if(price!==null){
+      pstr=cur==='HKD'?'HKD '+price.toFixed(2):'$'+price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    }
+
+    let cch='';
+    if(pct!==null&&!d?.st){
+      const cls=pct>0?'pos':pct<0?'neg':'zer';
+      cch=`<span class="cc ${cls}">${pct>0?'+':''}${pct.toFixed(2)}%</span>`;
+    }else if(d?.st){cch=`<span class="cc zer">HK Static</span>`;}
+
+    const up=(price&&s.target)?Math.round((s.target/price-1)*100):null;
+    const upH=up!==null?`<span class="ut ${up>=0?'pos':'neg'}">${up>=0?'+':''}${up}%</span>`:'<span style="color:var(--mu);font-size:10px">—</span>';
+
+    const col=vc(s.val), delay=(i%6)*0.05;
+    return`<div class="card" style="animation-delay:${delay}s">
+      <div class="ch ${rc.hdr}">
+        <span class="badge ${rc.badge}">${rc.txt}</span>
+        <div class="ct">${s.ticker}</div>
+        <div class="cn">${s.name}</div>
+        <div class="cpr"><span class="cp">${pstr}</span>${cch}</div>
+      </div>
+      <div class="cb">
+        <div class="row"><span class="rl">P/E TTM</span><span class="rv">${s.pe?s.pe+'x':'<span style="color:var(--mu)">N/A</span>'}</span></div>
+        <div class="row"><span class="rl">Fwd P/E</span><span class="rv">${s.fwdPe?s.fwdPe+'x':'<span style="color:var(--mu)">N/A</span>'}</span></div>
+        <div class="row"><span class="rl">Analyst Upside</span><span class="rv">${upH}</span></div>
+        <div class="mtr">
+          <div class="mt"><span>Valuation</span><span style="color:${col};font-weight:700">${vl(s.val)}</span></div>
+          <div class="mk"><div class="mf" style="width:${s.val}%;background:${col}"></div></div>
+        </div>
+        <p class="cmt">${s.cmt}</p>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateCounts(){
+  const c={strongbuy:0,accumulate:0,watch:0,speculative:0};
+  STOCKS.forEach(s=>c[rating(s)]++);
+  ['SB','Acc','W','Sp'].forEach((k,i)=>{
+    const v=[c.strongbuy,c.accumulate,c.watch,c.speculative][i];
+    document.getElementById('c'+k).textContent=v;
+    document.getElementById('m'+(k==='Sp'?'W':k)).textContent=k==='Sp'?c.watch:v;
+  });
+  document.getElementById('cSp').textContent=c.speculative;
+}
+
+let cdv=60, cdTimer;
+function resetCD(){
+  clearInterval(cdTimer);
+  cdv=60;
+  document.getElementById('cd').textContent=cdv;
+  cdTimer=setInterval(()=>{
+    cdv--;
+    document.getElementById('cd').textContent=cdv;
+    if(cdv<=0){clearInterval(cdTimer);fetchAll();}
+  },1000);
+}
+
+mktStatus();
+render();
+fetchAll();
+</script>
+</body>
+</html>
